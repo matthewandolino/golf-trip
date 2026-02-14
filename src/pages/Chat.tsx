@@ -183,7 +183,7 @@ export default function Chat() {
 
   return (
     <BackgroundPage backgroundImage={BACKGROUND_IMAGES.chat}>
-      <div className="max-w-md mx-auto px-4 pt-6 pb-28 flex flex-col min-h-screen">
+      <div className="max-w-md mx-auto px-4 pt-6 pb-40 flex flex-col min-h-screen">
         <h2 className="text-2xl font-bold mb-4">Chat</h2>
 
         <PinnedMessages messages={messages} />
@@ -206,7 +206,7 @@ export default function Chat() {
         </div>
 
         {/* Input bar */}
-        <div className="fixed bottom-16 left-0 right-0 px-4 pb-2">
+        <div className="fixed bottom-[6.5rem] left-0 right-0 px-4 pb-2">
           <div className="max-w-md mx-auto">
             <div className="glass rounded-2xl flex items-center gap-2 p-2">
               <Avatar name={currentPlayer?.name ?? '?'} />
