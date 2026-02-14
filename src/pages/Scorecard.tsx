@@ -5,7 +5,7 @@ import BackgroundPage from '../components/BackgroundPage';
 import { useStore } from '../store/useStore';
 import { BACKGROUND_IMAGES, PLAYERS } from '../lib/constants';
 import { isValidScore } from '../lib/sanitize';
-import type { Round, Score } from '../lib/types';
+import type { Round } from '../lib/types';
 
 // ── Biltmore Forest CC – Par 70 ─────────────────────────────────────
 // Real par layout: Par 70 (35 front / 35 back)
@@ -44,7 +44,6 @@ function uid() {
 // ── New Round Form ──────────────────────────────────────────────────
 function NewRoundForm({ onClose }: { onClose: () => void }) {
   const addRound = useStore((s) => s.addRound);
-  const rounds = useStore((s) => s.rounds);
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [holes, setHoles] = useState<9 | 18>(18);
   const [fmt, setFmt] = useState<Round['format']>('stroke');
@@ -180,7 +179,6 @@ function NewRoundForm({ onClose }: { onClose: () => void }) {
 // ── Live Score Tracker (shows +/- par for each player) ─────────────
 function LiveTracker({ round }: { round: Round }) {
   const pars = HOLE_PARS.slice(0, round.holes);
-  const parTotal = pars.reduce((a, b) => a + b, 0);
 
   return (
     <div className="mb-3 space-y-1.5">
@@ -189,7 +187,6 @@ function LiveTracker({ round }: { round: Round }) {
         const holesPlayed = score.holes.filter((h) => h !== null).length;
         const strokesPlayed = score.holes.reduce<number>((a, h) => a + (h ?? 0), 0);
         const parForPlayed = score.holes.reduce<number>((a, h, i) => a + (h !== null ? pars[i] : 0), 0);
-        const diff = holesPlayed > 0 ? strokesPlayed - parForPlayed : 0;
         const thru = holesPlayed;
 
         return (
@@ -285,7 +282,6 @@ function ScoreGrid({ round }: { round: Round }) {
                 const nineTotal = holeIndexes.reduce((a, i) => a + (score.holes[i] ?? 0), 0);
                 const nineHolesPlayed = holeIndexes.filter((i) => score.holes[i] !== null).length;
                 const nineParsPlayed = holeIndexes.reduce((a, i) => a + (score.holes[i] !== null ? pars[i] : 0), 0);
-                const nineDiff = nineHolesPlayed > 0 ? nineTotal - nineParsPlayed : 0;
                 return (
                   <tr key={score.id} className="border-b border-white/5">
                     <td className="py-1.5 pr-2 sticky left-0 bg-black/40 z-10 font-medium text-white/90 truncate max-w-[80px] text-xs">
